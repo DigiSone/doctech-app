@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="नागरिक सहायता एवं संपर्क केंद्र | विकास जन सेवा केंद्र">
+  <main class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-semibold">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span class="text-slate-900 font-bold">सहायता केंद्र</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl p-3 rounded-2xl bg-indigo-50 border border-indigo-100">📞</span>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+            नागरिक सहायता एवं समाधान केंद्र (Helpdesk)
+          </h1>
+          <p class="text-xs text-slate-500 mt-1 font-medium">
+            विकास जन सेवा केंद्र &bull; रॉबर्ट्सगंज, ज़िला: सोनभद्र (उत्तर प्रदेश)
+          </p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed font-medium">
+        यदि आपको किसी प्रमाण पत्र, पेंशन, खतौनी, राशन कार्ड अथवा सरकारी योजना हेतु आवेदन करने में कोई कठिनाई आ रही है, या भुगतान अथवा दस्तावेज सत्यापन में सहायता चाहिए, तो आप सीधे केंद्र संचालक से संपर्क कर सकते हैं।
+      </p>
+
+      <!-- Direct Contact Action Buttons -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <a href="https://wa.me/917392965992?text=नमस्ते%20विकास%20जी,%20मुझे%20जन%20सेवा%20केंद्र%20पोर्टल%20पर%20आवेदन%20हेतु%20सहायता%20चाहिए।" target="_blank" 
+           class="p-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 font-bold text-xs flex items-center gap-3 transition">
+          <span class="text-2xl">💬</span>
+          <div>
+            <span class="block text-sm font-black text-emerald-950">WhatsApp पर सीधे पूछें</span>
+            <span class="text-[11px] text-emerald-700 font-medium">दस्तावेज़ भेजकर जाँच कराएँ</span>
+          </div>
+        </a>
+
+        <a href="tel:+917392965992" 
+           class="p-4 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 font-bold text-xs flex items-center gap-3 transition">
+          <span class="text-2xl">📞</span>
+          <div>
+            <span class="block text-sm font-black text-indigo-950">संचालक को सीधे कॉल करें</span>
+            <span class="text-[11px] text-indigo-700 font-medium">+91-7392965992 पर बात करें</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Center Credentials & Operational Details -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+        <h2 class="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <span>🏛️</span> <span>केंद्र की अधिकृत पहचान</span>
+        </h2>
+        <div class="space-y-2 text-xs text-slate-600">
+          <div><strong>केंद्र का नाम:</strong> विकास जन सेवा केंद्र (DocTech)</div>
+          <div><strong>अधिकृत संचालक (VLE):</strong> विकास मिश्रा</div>
+          <div><strong>CSC VLE ID:</strong> <span class="font-mono font-bold text-indigo-700">337237130019</span></div>
+          <div><strong>MSME Udyam Reg:</strong> <span class="font-mono font-bold text-slate-800">UDYAM-UP-66-0038841</span></div>
+          <div><strong>कार्यक्षेत्र:</strong> रॉबर्ट्सगंज तहसील एवं समस्त सोनभद्र जनपद</div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+        <h2 class="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <span>⏰</span> <span>कार्य समय एवं स्थान</span>
+        </h2>
+        <div class="space-y-2 text-xs text-slate-600">
+          <div><strong>स्थान:</strong> विकास जन सेवा केंद्र, रॉबर्ट्सगंज, सोनभद्र (उ.प्र.) - 231216</div>
+          <div><strong>कार्य दिवस:</strong> सोमवार से शनिवार</div>
+          <div><strong>समय:</strong> प्रातः 08:00 बजे से सायं 08:00 बजे तक</div>
+          <div><strong>ऑनलाइन सेवा:</strong> 24x7 निरंतर उपलब्ध</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequently Asked Questions (FAQ) for Rural Citizens -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+      <h2 class="text-sm font-black text-slate-900 uppercase tracking-wider">अक्सर पूछे जाने वाले सवाल (FAQ)</h2>
+      
+      <div class="space-y-3 text-xs">
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+          <strong class="text-slate-900 block font-bold">1. क्या मुझे प्रमाण पत्र लेने के लिए तहसील या दफ्तर जाना होगा?</strong>
+          <p class="text-slate-600 leading-relaxed font-medium">नहीं। आपका प्रमाण पत्र स्वीकृत होते ही आपके WhatsApp पर मूल डिजिटल हस्ताक्षरित PDF आ जाएगा। आप इसे कहीं से भी प्रिंट करवा सकते हैं।</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+          <strong class="text-slate-900 block font-bold">2. यदि मेरे किसी दस्तावेज़ पर आपत्ति आ जाए तो क्या होगा?</strong>
+          <p class="text-slate-600 leading-relaxed font-medium">आपको नया फॉर्म भरने या दोबारा पैसे देने की आवश्यकता नहीं है। आप सीधे 'आवेदन स्थिति जांचें' पेज पर अपनी आवेदन संख्या दर्ज करके नया साफ दस्तावेज़ दोबारा अपलोड कर सकते हैं।</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+          <strong class="text-slate-900 block font-bold">3. प्रमाण पत्र कितने दिनों में बन जाता है?</strong>
+          <p class="text-slate-600 leading-relaxed font-medium">उत्तर प्रदेश जनहित गारंटी अधिनियम (RTPS) के तहत आय, जाति, निवास 7 से 10 कार्यदिवसों में और खतौनी तुरंत (1 दिन में) जारी हो जाती है।</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

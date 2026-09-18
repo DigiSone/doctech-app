@@ -1,0 +1,383 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="आवेदन स्थिति एवं पावती सत्यापन केंद्र | विकास जन सेवा केंद्र">
+  <main class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-semibold no-print">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span class="text-slate-900 font-bold">आवेदन स्थिति एवं पावती</span>
+    </nav>
+
+    <!-- Header Box -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-3 no-print">
+      <div class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>24x7 ऑनलाइन विभागीय ट्रैकिंग एवं डिजिटल पावती</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+        आवेदन स्थिति जांचें एवं मूल प्रमाण पत्र डाउनलोड करें
+      </h1>
+      <p class="text-xs text-slate-500 font-medium leading-relaxed">
+        अपनी आवेदन संख्या दर्ज करें। यदि रसीद खो गई है, तो अपने पंजीकृत 10-अंकीय मोबाइल नंबर से भी अपने समस्त आवेदन खोजे जा सकते हैं।
+      </p>
+
+      <!-- Search Inputs -->
+      <div class="pt-2 space-y-3">
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input type="text" id="mainTrackInput" placeholder="आवेदन संख्या दर्ज करें (उदा. DT-2609-XXXX)" 
+                 class="flex-1 px-4 py-3 rounded-2xl border border-slate-300 font-mono font-bold text-xs uppercase focus:outline-none focus:border-indigo-600 bg-slate-50 focus:bg-white">
+          <button onclick="window.executeTrack()" id="btnTrack" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-2xl shadow-xs transition active:scale-95 shrink-0">
+            स्थिति देखें &rarr;
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <button onclick="window.toggleMobileSearchBox()" class="text-indigo-600 font-bold hover:underline flex items-center gap-1">
+            <span>📱</span> <span>आवेदन संख्या नहीं पता? मोबाइल नंबर से खोजें</span>
+          </button>
+          <a href="/dashboard" class="text-slate-500 font-bold hover:text-indigo-600">नागरिक डैशबोर्ड &rarr;</a>
+        </div>
+
+        <!-- Mobile Search Dropdown -->
+        <div id="mobileSearchDrawer" class="hidden p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+          <label class="block font-bold text-slate-700 text-xs">पंजीकृत 10 अंकों का मोबाइल नंबर दर्ज करें:</label>
+          <div class="flex gap-2">
+            <input type="tel" id="mobileSearchInput" pattern="[0-9]{10}" placeholder="10 अंकों का मोबाइल नंबर" class="flex-1 px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs font-bold">
+            <button onclick="window.executeMobileSearch()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs">खोजें</button>
+          </div>
+          <div id="mobileResultsList" class="divide-y divide-slate-200 hidden max-h-48 overflow-y-auto pt-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRACKING RESULT CONTAINER -->
+    <div id="trackResultContainer" class="hidden space-y-6">
+
+      <!-- Live Status Dossier Card -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4 no-print">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold block uppercase">आवेदन संख्या</span>
+            <strong id="cardAppNo" class="text-base font-mono font-black text-indigo-700"></strong>
+          </div>
+          <span id="cardStatusBadge" class="px-3 py-1 rounded-full text-xs font-black shadow-xs"></span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200/80 font-medium">
+          <div><span class="text-slate-400 block text-[11px]">आवेदक का नाम:</span><strong id="cardName" class="text-slate-900 block truncate"></strong></div>
+          <div><span class="text-slate-400 block text-[11px]">सेवा का नाम:</span><strong id="cardService" class="text-slate-900 block truncate"></strong></div>
+          <div><span class="text-slate-400 block text-[11px]">सरकारी संदर्भ संख्या:</span><strong id="cardGovtRef" class="text-slate-900 font-mono block truncate">-</strong></div>
+          <div><span class="text-slate-400 block text-[11px]">आवेदन तिथि:</span><strong id="cardDate" class="text-slate-900 block truncate"></strong></div>
+        </div>
+
+        <!-- 5-Step Process Timeline -->
+        <div class="space-y-2 pt-1">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">विभागीय कार्य प्रगति (Live Timeline):</span>
+          <div class="grid grid-cols-5 text-center text-[10px] font-bold gap-1.5" id="timelineBoxes">
+            <div class="p-2 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-100" id="step1">1. दर्ज हुआ</div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-500" id="step2">2. e-District पंच</div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-500" id="step3">3. विभागीय जांच</div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-500" id="step4">4. स्वीकृत</div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-500" id="step5">5. जारी</div>
+          </div>
+        </div>
+
+        <!-- Defect / Objection Alert Box with Re-upload -->
+        <div id="defectBox" class="hidden p-4 rounded-2xl bg-rose-50 border border-rose-200 space-y-2.5 text-xs">
+          <div class="flex items-start gap-2 text-rose-900 font-bold">
+            <span class="text-lg">⚠️</span>
+            <div>
+              <strong class="block">विभागीय आपत्ति (दस्तावेज़ सुधार अपेक्षित):</strong>
+              <p id="defectText" class="text-rose-800 font-medium mt-0.5"></p>
+            </div>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-rose-200 space-y-2">
+            <label class="block font-bold text-slate-700 text-[11px]">नया साफ दस्तावेज़ चुनें (आधार कार्ड / अन्य):</label>
+            <div class="flex gap-2">
+              <input type="file" id="reuploadFileInput" accept=".pdf,image/*" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-rose-600 file:text-white cursor-pointer">
+              <button onclick="window.submitReupload()" id="btnReup" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shrink-0">सुधारें &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verified Certificate Download Button -->
+        <div id="certDownloadBox" class="hidden pt-2">
+          <a id="certDownloadLink" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-2xl shadow-sm transition active:scale-95">
+            <span>📥 मूल डिजिटल प्रमाण पत्र डाउनलोड करें (Official Verified PDF)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- OFFICIAL CITIZEN ACKNOWLEDGEMENT SLIP (PRINTABLE) -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 bg-slate-100 border-b border-slate-200 flex items-center justify-between no-print">
+          <span class="text-xs font-bold text-slate-700 flex items-center gap-1">
+            <span>🧾</span> <span>डिजिटल पावती रसीद पत्रक</span>
+          </span>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1">
+              🖨️ रसीद प्रिंट करें
+            </button>
+          </div>
+        </div>
+
+        <div id="printableReceiptArea" class="p-8 text-xs text-slate-900 space-y-4 bg-white">
+          <div class="text-center border-b-2 border-slate-900 pb-3 space-y-1">
+            <h2 class="text-base font-black tracking-tight text-slate-900">उत्तर प्रदेश शासन अधिकृत नागरिक सेवा केंद्र</h2>
+            <h3 class="text-sm font-extrabold text-indigo-900">विकास जन सेवा केंद्र (DocTech)</h3>
+            <p class="text-[10px] text-slate-600 font-medium">
+              CSC VLE ID: <strong>337237130019</strong> &bull; MSME Reg: <strong>UDYAM-UP-66</strong><br>
+              पता: रॉबर्ट्सगंज, ज़िला: सोनभद्र, उत्तर प्रदेश - 231216
+            </p>
+            <div class="pt-1">
+              <span class="px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-300 text-[10px] font-bold uppercase tracking-wider">
+                आधिकारिक नागरिक पावती रसीद (Citizen Receipt Slip)
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 p-3 rounded-xl border border-slate-200 font-medium">
+            <div>आवेदन संख्या: <strong class="font-mono text-indigo-700 text-xs block font-bold" id="rcptAppNo"></strong></div>
+            <div>आवेदन तिथि: <strong class="block text-slate-800" id="rcptDate"></strong></div>
+            <div>आवेदक का नाम: <strong class="block text-slate-800 font-bold" id="rcptName"></strong></div>
+            <div>मोबाइल नंबर: <strong class="block text-slate-800 font-mono" id="rcptMobile"></strong></div>
+            <div>सेवा का नाम: <strong class="block text-indigo-950 font-bold" id="rcptService"></strong></div>
+            <div>तहसील व ज़िला: <strong class="block text-slate-800 font-bold">रॉबर्ट्सगंज, सोनभद्र</strong></div>
+          </div>
+
+          <div class="space-y-1.5">
+            <span class="font-bold text-[11px] uppercase tracking-wider text-slate-700 block">वैधानिक शुल्क विवरण:</span>
+            <table class="w-full border border-slate-300 rounded-lg overflow-hidden text-[11px]">
+              <tr class="border-b border-slate-200 bg-slate-50">
+                <td class="p-2 text-slate-600">1. शासकीय कोषागार / e-District वॉलेट अंश:</td>
+                <td class="p-2 font-mono font-bold text-right" id="rcptGovtFee"></td>
+              </tr>
+              <tr class="border-b border-slate-200">
+                <td class="p-2 text-slate-600">2. अधिकृत VLE तकनीकी व सेवा शुल्क:</td>
+                <td class="p-2 font-mono font-bold text-right" id="rcptVleFee">₹30.00</td>
+              </tr>
+              <tr class="bg-indigo-50/80 font-bold">
+                <td class="p-2 text-indigo-950">कुल प्राप्त वैधानिक राशि (Total Paid):</td>
+                <td class="p-2 font-mono text-indigo-700 text-right text-xs" id="rcptTotalFee"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-[11px] flex justify-between items-center">
+            <div>
+              <span class="text-emerald-800 font-semibold block">भुगतान माध्यम: <strong>UPI ऑनलाइन भुगतान</strong></span>
+              <span class="text-[10px] text-emerald-700 font-mono">बैंक UTR / Ref No: <strong id="rcptUtr"></strong></span>
+            </div>
+            <span class="px-2 py-0.5 bg-emerald-600 text-white rounded text-[9px] font-bold">✓ PAID & VERIFIED</span>
+          </div>
+
+          <!-- Digital Verification QR Code -->
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between gap-3">
+            <div>
+              <span class="text-[11px] font-bold text-slate-800 block">डिजिटल सत्यापन QR कोड (Digital Verification)</span>
+              <span class="text-[9px] text-slate-500 leading-tight block mt-0.5">
+                किसी भी स्मार्टफोन कैमरे से स्कैन करके पोर्टल पर इस रसीद की आधिकारिक वैधता जांची जा सकती है।
+              </span>
+            </div>
+            <img id="rcptVerifyQr" src="" alt="Verify QR" class="w-16 h-16 rounded-lg border border-slate-300 p-0.5 bg-white shrink-0">
+          </div>
+
+          <div class="text-[9px] text-slate-500 leading-relaxed border-t border-slate-200 pt-2 space-y-1">
+            <p>&bull; उत्तर प्रदेश जनहित गारंटी अधिनियम (RTPS) के अंतर्गत प्रमाण पत्र निर्धारित कार्यदिवसों में जारी किया जाएगा।</p>
+            <p>&bull; प्रमाण पत्र स्वीकृत होते ही मूल डिजिटल PDF आपके पंजीकृत WhatsApp नंबर पर स्वतः प्रेषित कर दी जाएगी।</p>
+          </div>
+
+          <div class="pt-4 flex justify-between items-end text-[10px] text-slate-600">
+            <div>
+              <span>डिजिटल मुहर: <strong>विकास जन सेवा केंद्र</strong></span><br>
+              <span class="font-mono text-[9px]"> Robertsganj, Sonbhadra</span>
+            </div>
+            <div class="text-right">
+              <div class="w-24 border-b border-slate-400 mb-1"></div>
+              <span>अधिकृत केंद्र संचालक हस्ताक्षर</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    const SUPABASE_URL = "https://bpfbdmonxbdiwflpxpzt.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwZmJkbW9ueGJkaXdmbHB4cHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjgyMzksImV4cCI6MjEwNTIwNDIzOX0.1KglQKHg-nloSaK1myghjVpNpcwAYzWdJ1_bBv0gclU";
+    let sb = null;
+    if (window.supabase) {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    let activeAppRecord = null;
+
+    window.toggleMobileSearchBox = function() {
+      document.getElementById('mobileSearchDrawer').classList.toggle('hidden');
+    };
+
+    window.executeTrack = async function() {
+      const appNo = document.getElementById('mainTrackInput').value.trim().toUpperCase();
+      if (!appNo) return;
+
+      const btn = document.getElementById('btnTrack');
+      btn.disabled = true;
+      btn.innerText = "खोज रहे हैं...";
+
+      try {
+        let app = null;
+        if (sb) {
+          const { data, error } = await sb.from('applications').select('*').eq('application_no', appNo).maybeSingle();
+          if (!error && data) app = data;
+        }
+
+        if (!app) {
+          alert(`आवेदन संख्या '${appNo}' प्राप्त नहीं हुई। कृपया सही संख्या जांचें।`);
+          return;
+        }
+
+        activeAppRecord = app;
+        const p = app.document_payload || {};
+
+        // Fill dossier
+        document.getElementById('cardAppNo').innerText = app.application_no;
+        document.getElementById('cardName').innerText = app.applicant_name;
+        document.getElementById('cardService').innerText = app.service_type;
+        document.getElementById('cardGovtRef').innerText = p.govt_edistrict_ref || 'प्रक्रियाधीन';
+        document.getElementById('cardDate').innerText = new Date(app.created_at).toLocaleDateString('hi-IN');
+
+        const badge = document.getElementById('cardStatusBadge');
+        badge.innerText = app.status;
+        badge.className = app.status === 'APPROVED' 
+          ? "px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800" 
+          : "px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-800";
+
+        // Timeline
+        const actCls = "p-2 rounded-xl bg-indigo-600 text-white font-black shadow-xs";
+        const inactCls = "p-2 rounded-xl bg-slate-100 text-slate-500 font-bold";
+        document.getElementById('step1').className = actCls;
+        document.getElementById('step2').className = (p.wallet_debit_status === 'DEBITED_ON_EDISTRICT') ? actCls : inactCls;
+        document.getElementById('step3').className = (app.status === 'IN_PROCESS' || app.status === 'APPROVED') ? actCls : inactCls;
+        document.getElementById('step4').className = (app.status === 'APPROVED') ? actCls : inactCls;
+        document.getElementById('step5').className = (app.status === 'APPROVED' && p.certificate_url) ? actCls : inactCls;
+
+        // Defect check
+        const defectBox = document.getElementById('defectBox');
+        if (app.defect_remark) {
+          document.getElementById('defectText').innerText = app.defect_remark;
+          defectBox.classList.remove('hidden');
+        } else {
+          defectBox.classList.add('hidden');
+        }
+
+        // Certificate download
+        const certBox = document.getElementById('certDownloadBox');
+        if (app.status === 'APPROVED' && p.certificate_url) {
+          document.getElementById('certDownloadLink').href = p.certificate_url;
+          certBox.classList.remove('hidden');
+        } else {
+          certBox.classList.add('hidden');
+        }
+
+        // Receipt
+        document.getElementById('rcptAppNo').innerText = app.application_no;
+        document.getElementById('rcptDate').innerText = new Date(app.created_at).toLocaleString('hi-IN');
+        document.getElementById('rcptName').innerText = app.applicant_name;
+        document.getElementById('rcptMobile').innerText = app.mobile_no;
+        document.getElementById('rcptService').innerText = app.service_type;
+        document.getElementById('rcptGovtFee').innerText = `₹${p.govt_fee || '0.00'}`;
+        document.getElementById('rcptVleFee').innerText = `₹${p.vle_fee || '30.00'}`;
+        document.getElementById('rcptTotalFee').innerText = `₹${p.fee_amount || '30.00'}`;
+        document.getElementById('rcptUtr').innerText = p.upi_utr || 'N/A';
+
+        const verifyUrl = `https://doctech-app.pages.dev/track?app=${app.application_no}`;
+        document.getElementById('rcptVerifyQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}`;
+
+        document.getElementById('trackResultContainer').classList.remove('hidden');
+        document.getElementById('trackResultContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch(err) {
+        alert("त्रुटि: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "स्थिति देखें →";
+      }
+    };
+
+    window.executeMobileSearch = async function() {
+      const mob = document.getElementById('mobileSearchInput').value.trim();
+      if (!/^[0-9]{10}$/.test(mob)) {
+        alert("कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें!");
+        return;
+      }
+      const list = document.getElementById('mobileResultsList');
+      list.innerHTML = '<div class="p-3 text-center text-xs text-slate-400">खोजा जा रहा है...</div>';
+      list.classList.remove('hidden');
+
+      const { data, error } = await sb.from('applications').select('application_no, applicant_name, service_type, status, created_at').eq('mobile_no', mob).order('created_at', { ascending: false });
+      if (error || !data || !data.length) {
+        list.innerHTML = '<div class="p-3 text-center text-xs text-rose-500 font-bold">इस मोबाइल नंबर से कोई आवेदन नहीं मिला।</div>';
+        return;
+      }
+
+      list.innerHTML = '';
+      data.forEach(a => {
+        const item = document.createElement('div');
+        item.className = "p-2.5 hover:bg-indigo-50 rounded-xl cursor-pointer text-xs space-y-0.5 transition";
+        item.onclick = () => {
+          document.getElementById('mainTrackInput').value = a.application_no;
+          window.executeTrack();
+        };
+        item.innerHTML = `
+          <div class="flex justify-between font-bold">
+            <span class="font-mono text-indigo-700">${a.application_no}</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-200 text-slate-800">${a.status}</span>
+          </div>
+          <div class="text-slate-700 font-semibold">${a.service_type} &bull; ${a.applicant_name}</div>
+        `;
+        list.appendChild(item);
+      });
+    };
+
+    window.submitReupload = async function() {
+      const file = document.getElementById('reuploadFileInput').files[0];
+      if (!file || !activeAppRecord) {
+        alert("कृपया सुधार हेतु फ़ाइल चुनें!");
+        return;
+      }
+      const btn = document.getElementById('btnReup');
+      btn.disabled = true;
+      btn.innerText = "अपलोड...";
+
+      try {
+        const ext = file.name.split('.').pop();
+        const path = `reuploads/${activeAppRecord.application_no}_${Date.now()}.${ext}`;
+        await sb.storage.from('applicant-docs').upload(path, file);
+        const { data: u } = sb.storage.from('applicant-docs').getPublicUrl(path);
+
+        const updatedPayload = Object.assign({}, activeAppRecord.document_payload, { id_proof_doc: u.publicUrl });
+        await sb.from('applications').update({
+          status: 'IN_PROCESS',
+          defect_remark: null,
+          document_payload: updatedPayload
+        }).eq('application_no', activeAppRecord.application_no);
+
+        alert("दस्तावेज़ सफलतापूर्वक सुधारा गया! स्थिति पुनः जांच में भेज दी गई है।");
+        window.executeTrack();
+      } catch(e) {
+        alert("त्रुटि: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "सुधारें →";
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const p = new URLSearchParams(window.location.search).get('app');
+      if (p) {
+        document.getElementById('mainTrackInput').value = p.trim().toUpperCase();
+        setTimeout(window.executeTrack, 300);
+      }
+    });
+  </script>
+</Layout>

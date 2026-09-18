@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import masterData from '../data/master_core.json';
+
+const { services = [], departments = [] } = masterData;
+---
+<Layout title="शासकीय अधिकृत सेवा दर सूची | विकास जन सेवा केंद्र (DocTech)">
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-semibold no-print">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span class="text-slate-900 font-bold">शासकीय सेवा दर सूची</span>
+    </nav>
+
+    <!-- Header Box -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold mb-2">
+            <span>⚖️ उ.प्र. ई-डिस्ट्रिक्ट शासनादेश दरें लागू</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+            अधिकृत शासकीय सेवा दर सूची (Official Rate Card)
+          </h1>
+          <p class="text-xs text-slate-500 mt-1 font-medium">
+            विकास जन सेवा केंद्र, रॉबर्ट्सगंज (सोनभद्र) &bull; VLE ID: 337237130019
+          </p>
+        </div>
+
+        <button onclick="window.playRateCardAudio()" class="px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold border border-indigo-200 shadow-xs transition flex items-center gap-2 shrink-0 no-print">
+          <span>🔊</span>
+          <span>दर सूची बोलकर सुनें</span>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-600 leading-relaxed font-medium">
+        उत्तर प्रदेश शासन के शासनादेश अनुसार प्रत्येक सेवा का शुल्क दो भागों में स्पष्ट रूप से विभाजित है: (1) सरकारी कोषागार अथवा e-District वॉलेट में जमा होने वाला अनिवार्य <strong>शासकीय चालान (Govt Fee)</strong>, और (2) डिजिटल आवेदन, ड्राफ्टिंग एवं तकनीकी सहायता हेतु अधिकृत <strong>VLE सेवा शुल्क (फ्लैट ₹30.00)</strong>।
+      </p>
+    </div>
+
+    <!-- Rate Card Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 no-print">
+        <input type="text" id="rateSearchInput" oninput="window.filterRateCard()" placeholder="दर सूची में खोजें (उदा. आय, खतौनी, पैन, पुलिस...)" 
+               class="w-full sm:w-72 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-indigo-600">
+        <span class="text-xs text-slate-500 font-bold">कुल <strong>{services.length}</strong> आधिकारिक सेवाएँ</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs" id="rateCardTable">
+          <thead class="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider font-extrabold border-b border-slate-200">
+            <tr>
+              <th class="p-3.5">सेवा का नाम</th>
+              <th class="p-3.5">संबंधित विभाग</th>
+              <th class="p-3.5 text-right">सरकारी चालान</th>
+              <th class="p-3.5 text-right">VLE शुल्क</th>
+              <th class="p-3.5 text-right">कुल वैधानिक दर</th>
+              <th class="p-3.5 text-center no-print">कार्यवाही</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-800">
+            {services.map((s) => {
+              const dept = departments.find(d => d.id === s.dept_id);
+              const total = (s.govt_fee + s.vle_fee).toFixed(2);
+              return (
+                <tr class="hover:bg-slate-50 transition rate-row" data-name={s.name.toLowerCase()} data-dept={dept ? dept.name.toLowerCase() : ''}>
+                  <td class="p-3.5 font-bold text-slate-900">
+                    {s.name}
+                    <span class="block text-[10px] text-slate-400 font-normal">{s.timeline}</span>
+                  </td>
+                  <td class="p-3.5 text-slate-600 text-[11px]">
+                    {dept ? dept.name.split('(')[0].trim() : 'उत्तर प्रदेश शासन'}
+                  </td>
+                  <td class="p-3.5 font-mono text-right text-slate-700">₹{s.govt_fee.toFixed(2)}</td>
+                  <td class="p-3.5 font-mono text-right text-slate-700">₹{s.vle_fee.toFixed(2)}</td>
+                  <td class="p-3.5 font-mono text-right font-black text-indigo-700 text-sm">₹{total}</td>
+                  <td class="p-3.5 text-center no-print">
+                    <a href={`/apply/${s.id}`} class="inline-block px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-[11px] shadow-xs transition active:scale-95">
+                      आवेदन &rarr;
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    window.filterRateCard = function() {
+      const q = document.getElementById('rateSearchInput').value.trim().toLowerCase();
+      const rows = document.querySelectorAll('.rate-row');
+      rows.forEach(r => {
+        const name = r.dataset.name || '';
+        const dept = r.dataset.dept || '';
+        if (name.includes(q) || dept.includes(q)) {
+          r.classList.remove('hidden');
+        } else {
+          r.classList.add('hidden');
+        }
+      });
+    };
+
+    window.playRateCardAudio = function() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance("विकास जन सेवा केंद्र की अधिकृत दर सूची। आय, जाति, निवास और राशन कार्ड का सरकारी चालान पंद्रह रुपये है और सेवा शुल्क तीस रुपये है, कुल पैंतालीस रुपये। पुलिस सत्यापन का सरकारी चालान पचास रुपये और सेवा शुल्क तीस रुपये, कुल अस्सी रुपये। पैन कार्ड का सरकारी चालान एक सौ सात रुपये और सेवा शुल्क तीस रुपये, कुल एक सौ सैंतीस रुपये। पेंशन और ई-श्रम का सरकारी चालान शून्य रुपये है, केवल तीस रुपये सेवा शुल्क देय है।");
+      u.lang = 'hi-IN';
+      u.rate = 0.92;
+      window.speechSynthesis.speak(u);
+    };
+  </script>
+</Layout>
