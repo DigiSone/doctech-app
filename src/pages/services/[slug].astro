@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import masterData from '../../data/master_core.json';
+
+export async function getStaticPaths() {
+  const { services, departments } = masterData;
+  return services.map((svc) => {
+    const dept = departments.find(d => d.id === svc.dept_id);
+    return {
+      params: { slug: svc.id },
+      props: { svc, dept }
+    };
+  });
+}
+
+const { svc, dept } = Astro.props;
+const pageTitle = `${svc.name} ऑनलाइन आवेदन | विकास जन सेवा केंद्र सोनभद्र`;
+const totalFee = (svc.govt_fee + svc.vle_fee).toFixed(2);
+---
+<Layout title={pageTitle}>
+  <main class="max-w-4xl mx-auto px-4 py-8 w-full space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span>{dept?.name.split('(')[0].trim()}</span>
+      <span>/</span>
+      <span class="text-slate-900 font-bold truncate">{svc.name}</span>
+    </nav>
+
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">
+          <span>{dept?.icon} {dept?.name}</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-snug">{svc.name}</h1>
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">{svc.desc}</p>
+      </div>
+
+      <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+        <h2 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">शासकीय एवं अधिकृत सेवा दरें:</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="bg-white p-3.5 rounded-xl border border-slate-200/80">
+            <span class="text-slate-500 block text-[11px]">1. सरकारी चालान (Govt Fee):</span>
+            <strong class="text-slate-900 font-mono text-base block mt-0.5">₹{svc.govt_fee.toFixed(2)}</strong>
+          </div>
+          <div class="bg-white p-3.5 rounded-xl border border-slate-200/80">
+            <span class="text-slate-500 block text-[11px]">2. अधिकृत VLE सेवा शुल्क:</span>
+            <strong class="text-slate-900 font-mono text-base block mt-0.5">₹{svc.vle_fee.toFixed(2)}</strong>
+          </div>
+          <div class="bg-indigo-50 p-3.5 rounded-xl border border-indigo-200 text-indigo-950">
+            <span class="text-indigo-700 block text-[11px] font-bold">कुल देय वैधानिक शुल्क:</span>
+            <strong class="text-indigo-700 font-mono text-base block mt-0.5">₹{totalFee}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex flex-col sm:flex-row gap-3">
+        <a href={`/?apply=${svc.id}`} 
+           class="flex-1 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2 active:scale-95">
+          <span>📝 जन सेवा केंद्र द्वारा आवेदन करें &rarr;</span>
+        </a>
+        <a href={svc.govt_portal_url} target="_blank" rel="noopener noreferrer"
+           class="py-4 px-6 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm rounded-2xl border border-slate-200 transition flex items-center justify-center gap-2 active:scale-95">
+          <span>🌐 आधिकारिक सरकारी पोर्टल ({svc.govt_portal_name})</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
