@@ -12,31 +12,47 @@ const { title } = Astro.props;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="theme-color" content="#1e1b4b" />
   <meta name="author" content="विकास जन सेवा केंद्र" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="manifest" href="/manifest.json" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <!-- Anti-Stale SW & Cache Purger -->
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        for (let r of regs) r.unregister();
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(function(keys) {
+        keys.forEach(function(k) { caches.delete(k); });
+      });
+    }
+  </script>
+
   <title>{title}</title>
 </head>
 <body class="min-h-full flex flex-col text-slate-800 bg-[#F8FAFC] antialiased overflow-x-hidden">
   
-  <aside aria-label="Official Center Notice" class="bg-indigo-950 text-indigo-200 text-[11px] py-1.5 px-3 border-b border-indigo-900/70 no-print">
+  <!-- VISUAL LIVE BUILD VERIFICATION BADGE -->
+  <aside aria-label="Build Status" class="bg-emerald-950 text-emerald-300 text-[10px] py-1 px-3 border-b border-emerald-900/60 no-print">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
       <div class="flex items-center gap-1.5 truncate">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-        <span class="font-medium truncate">अधिकृत जन सेवा केंद्र (CSC e-Gov & e-District UP)</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+        <span class="font-bold tracking-wide uppercase">🟢 LIVE SYSTEM V3.2 &bull; 18 Sep 2026 • 02:47 AM</span>
       </div>
-      <div class="flex items-center gap-2 font-mono text-[10px] shrink-0">
-        <span class="bg-indigo-900/90 text-indigo-300 px-2 py-0.5 rounded border border-indigo-700/50">VLE: 337237130019</span>
-        <span class="bg-indigo-900/90 text-indigo-300 px-2 py-0.5 rounded border border-indigo-700/50 hidden sm:inline">MSME: UDYAM-UP-66</span>
+      <div class="flex items-center gap-2 font-mono text-[9px] shrink-0">
+        <span class="bg-emerald-900/80 text-emerald-200 px-2 py-0.5 rounded border border-emerald-700/50">VLE: 337237130019</span>
+        <span class="bg-emerald-900/80 text-emerald-200 px-2 py-0.5 rounded border border-emerald-700/50 hidden sm:inline">ROBERTSGANJ</span>
       </div>
     </div>
   </aside>
@@ -66,10 +82,10 @@ const { title } = Astro.props;
         </div>
 
         <div>
-          <span class="font-bold text-slate-900 text-xs block mb-2">त्वरित लिंक्स व संपर्क</span>
+          <span class="font-bold text-slate-900 text-xs block mb-2">पोर्टल नेविगेशन एवं डेस्क</span>
           <div class="space-y-1.5 text-[11px]">
             <div><a href="/dashboard" class="font-bold text-indigo-600 hover:underline">👤 नागरिक यूज़र डैशबोर्ड &rarr;</a></div>
-            <div><a href="/admin" class="font-bold text-slate-600 hover:text-indigo-600 underline">🔐 VLE ऑपरेटर कंसोल &rarr;</a></div>
+            <div><a href="/admin" class="font-bold text-slate-700 hover:text-indigo-600 underline">🔐 VLE ऑपरेटर कंसोल &rarr;</a></div>
             <p class="text-[10px] text-slate-400 mt-2">संचालक: विकास मिश्रा | रॉबर्ट्सगंज, सोनभद्र</p>
           </div>
         </div>

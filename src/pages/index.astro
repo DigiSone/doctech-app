@@ -20,11 +20,11 @@ const { departments, services } = masterData;
       </a>
 
       <div class="flex items-center gap-2 shrink-0">
-        <button onclick="window.openRateCardModal()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 text-xs font-bold border border-slate-200 transition">
-          📋 अधिकृत दर सूची
-        </button>
-        <button onclick="window.playAudioIntro()" title="AI आवाज़ सुनें" class="w-9 h-9 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-100 text-sm active:scale-95 transition">
-          🔊
+        <a href="/dashboard" class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold border border-indigo-200 transition">
+          👤 नागरिक डैशबोर्ड
+        </a>
+        <button onclick="window.openRateCardModal()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition">
+          📋 दर सूची
         </button>
       </div>
     </div>
@@ -72,9 +72,9 @@ const { departments, services } = masterData;
         </div>
 
         <div class="flex items-center justify-between pt-1">
-          <button type="button" onclick="window.openMobileSearchModal()" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
-            <span>📱</span> <span>आवेदन संख्या भूल गए? मोबाइल नंबर से खोजें</span>
-          </button>
+          <a href="/dashboard" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+            <span>📱</span> <span>आवेदन संख्या भूल गए? मोबाइल नंबर से अपने डैशबोर्ड में खोजें &rarr;</span>
+          </a>
         </div>
 
         <div id="trackResultBox" class="hidden p-4 rounded-xl bg-indigo-50/60 border border-indigo-100 space-y-3">
@@ -105,7 +105,7 @@ const { departments, services } = masterData;
           </div>
 
           <div id="certContainer" class="hidden pt-1">
-            <a id="certLink" href="#" target="_blank" class="w-full flex items-center justify-center gap-1.5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition">
+            <a id="certLink" href="#" target="_blank" class="w-full flex items-center justify-center gap-1.5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition">
               मूल डिजिटल हस्ताक्षरित प्रमाण पत्र डाउनलोड करें (Verified PDF)
             </a>
           </div>
@@ -113,7 +113,7 @@ const { departments, services } = masterData;
       </div>
     </section>
 
-    <!-- Personas Filter -->
+    <!-- Personas Filter (Who are you?) -->
     <section class="space-y-2.5">
       <div class="flex items-center justify-between">
         <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">1. अपनी नागरिक श्रेणी चुनें:</h2>
@@ -256,25 +256,6 @@ const { departments, services } = masterData;
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-
-  <!-- Mobile Search Modal -->
-  <div id="mobileSearchModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden items-center justify-center p-3 no-print">
-    <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-4 text-xs">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-base">📱</span>
-          <h3 class="font-extrabold text-slate-900 text-sm">मोबाइल नंबर से आवेदन खोजें</h3>
-        </div>
-        <button onclick="window.closeMobileSearchModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
-      </div>
-      <p class="text-[11px] text-slate-500 font-medium">आवेदन करते समय दर्ज किया गया 10 अंकों का मोबाइल नंबर दर्ज करें:</p>
-      <div class="flex gap-2">
-        <input type="tel" id="searchMobileInput" pattern="[0-9]{10}" placeholder="10 अंकों का मोबाइल नंबर" class="flex-1 px-3 py-2.5 border border-slate-300 rounded-xl font-mono text-xs font-bold">
-        <button onclick="window.executeSearchByMobile()" id="btnSearchByMobile" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-xs">खोजें</button>
-      </div>
-      <div id="mobileSearchResults" class="max-h-60 overflow-y-auto divide-y divide-slate-100 hidden space-y-2"></div>
     </div>
   </div>
 
@@ -494,7 +475,7 @@ const { departments, services } = masterData;
 
         <div class="text-[9px] text-slate-500 leading-relaxed border-t border-slate-200 pt-2 space-y-1">
           <p>• उत्तर प्रदेश जनहित गारंटी अधिनियम (RTPS) के अंतर्गत उक्त प्रमाण पत्र निर्धारित कार्यदिवसों में जारी किया जाएगा।</p>
-          <p>• आवेदन की लाइव स्थिति जांचने हेतु पोर्टल (https://doctech-app.pages.dev) पर अपनी आवेदन संख्या दर्ज करें।</p>
+          <p>• आवेदन की लाइव स्थिति जांचने हेतु पोर्टल पर अपनी आवेदन संख्या दर्ज करें।</p>
         </div>
 
         <div class="pt-4 flex justify-between items-end text-[10px] text-slate-600">
@@ -510,27 +491,6 @@ const { departments, services } = masterData;
       </div>
     </div>
   </div>
-
-  <!-- FLOATING HELPDESK WIDGET -->
-  <aside aria-label="Citizen Help Desk" class="fixed bottom-5 right-4 z-40 no-print flex flex-col items-end gap-2">
-    <div id="helpdeskMenu" class="hidden bg-white p-3.5 rounded-2xl shadow-2xl border border-slate-200 text-xs space-y-2 w-56 animate-in fade-in slide-in-from-bottom-3">
-      <div class="border-b border-slate-100 pb-1.5">
-        <strong class="text-slate-900 block font-bold">सहायता केंद्र (Help Desk)</strong>
-        <span class="text-[10px] text-slate-500 font-medium">विकास जन सेवा केंद्र, रॉबर्ट्सगंज</span>
-      </div>
-      <a href="https://wa.me/917392965992?text=नमस्ते%20विकास%20जी,%20मुझे%20जन%20सेवा%20केंद्र%20पोर्टल%20पर%20आवेदन%20हेतु%20सहायता%20चाहिए।" target="_blank" class="flex items-center gap-2 p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition">
-        <span class="text-base">💬</span> WhatsApp पर पूछें
-      </a>
-      <a href="tel:+917392965992" class="flex items-center gap-2 p-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold transition">
-        <span class="text-base">📞</span> केंद्र संचालक को कॉल करें
-      </a>
-    </div>
-    <button onclick="window.toggleHelpdeskMenu()" class="px-4 py-2.5 rounded-full bg-slate-900 hover:bg-indigo-950 text-white font-bold text-xs shadow-xl flex items-center gap-2 transition active:scale-95 border border-slate-800">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-      <span>मदद चाहिए?</span>
-      <span class="text-sm">💬</span>
-    </button>
-  </aside>
 
   <!-- JAVASCRIPT ENGINE -->
   <script is:inline>
@@ -660,25 +620,10 @@ const { departments, services } = masterData;
       m.classList.remove('flex');
     };
 
-    window.openMobileSearchModal = function() {
-      const m = document.getElementById('mobileSearchModal');
-      m.classList.remove('hidden');
-      m.classList.add('flex');
-    };
-    window.closeMobileSearchModal = function() {
-      const m = document.getElementById('mobileSearchModal');
-      m.classList.add('hidden');
-      m.classList.remove('flex');
-    };
-
     window.closeReceiptModal = function() {
       const m = document.getElementById('receiptModal');
       m.classList.add('hidden');
       m.classList.remove('flex');
-    };
-
-    window.toggleHelpdeskMenu = function() {
-      document.getElementById('helpdeskMenu').classList.toggle('hidden');
     };
 
     window.updateStepTracker = function(step) {
@@ -947,50 +892,6 @@ const { departments, services } = masterData;
       }
 
       document.getElementById('trackResultBox').classList.remove('hidden');
-    };
-
-    window.executeSearchByMobile = async function() {
-      const mob = document.getElementById('searchMobileInput').value.trim();
-      if (!/^[0-9]{10}$/.test(mob)) {
-        alert("कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें!");
-        return;
-      }
-      const resContainer = document.getElementById('mobileSearchResults');
-      resContainer.innerHTML = '<div class="p-3 text-center text-slate-400 text-xs">खोजा जा रहा है...</div>';
-      resContainer.classList.remove('hidden');
-
-      if (!sb) {
-        resContainer.innerHTML = '<div class="p-3 text-center text-rose-500 font-bold text-xs">डेटाबेस सर्वर कनेक्ट नहीं हुआ।</div>';
-        return;
-      }
-
-      const { data, error } = await sb.from('applications').select('application_no, applicant_name, service_type, status, created_at').eq('mobile_no', mob).order('created_at', { ascending: false });
-      if (error || !data || data.length === 0) {
-        resContainer.innerHTML = '<div class="p-3 text-center text-rose-500 font-bold text-xs">इस मोबाइल नंबर से कोई आवेदन नहीं मिला।</div>';
-        return;
-      }
-
-      resContainer.innerHTML = '';
-      data.forEach(function(app) {
-        const item = document.createElement('div');
-        item.className = "p-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl cursor-pointer border border-slate-200 transition space-y-1";
-        item.onclick = function() {
-          window.closeMobileSearchModal();
-          document.getElementById('trackInput').value = app.application_no;
-          window.handleTrack();
-          document.getElementById('trackInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        };
-        item.innerHTML = '<div class="flex items-center justify-between"><span class="font-mono font-bold text-indigo-700 text-xs">' + app.application_no + '</span><span class="px-2 py-0.5 rounded text-[9px] font-bold ' + (app.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800') + '">' + app.status + '</span></div><div class="text-[11px] text-slate-800 font-semibold">' + app.service_type + ' • ' + app.applicant_name + '</div><div class="text-[10px] text-slate-400">' + new Date(app.created_at).toLocaleDateString('hi-IN') + ' (क्लिक करके स्थिति देखें)</div>';
-        resContainer.appendChild(item);
-      });
-    };
-
-    window.playAudioIntro = function() {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance("विकास जन सेवा केंद्र में आपका स्वागत है। उत्तर प्रदेश शासन के सभी प्रमाण पत्र एवं सरकारी योजनाओं के लिए आवेदन करें अथवा सीधे आधिकारिक विभागीय पोर्टल पर जाएं।");
-      u.lang = 'hi-IN';
-      window.speechSynthesis.speak(u);
     };
 
     window.educateService = function(name, gFee, vFee) {
