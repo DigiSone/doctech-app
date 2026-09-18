@@ -2,12 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="विकास जन सेवा केंद्र | VLE ऑपरेटर कंसोल">
+  
+  <!-- Security Gate -->
   <div id="authGate" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-4">
     <div class="bg-white max-w-sm w-full rounded-3xl shadow-2xl border border-slate-200 p-8 text-center space-y-4">
-      <img src="/favicon.svg" alt="DocTech Logo" class="w-14 h-14 rounded-2xl mx-auto shadow-md" />
+      <img src="/favicon.svg" alt="Logo" class="w-14 h-14 rounded-2xl mx-auto shadow-md" />
       <div>
         <h2 class="text-base font-bold text-slate-900">विकास जन सेवा केंद्र</h2>
-        <p class="text-[11px] text-slate-500 font-mono">VLE ID: 337237130019 | सुरक्षित कंसोल</p>
+        <p class="text-[11px] text-slate-500 font-mono">VLE ID: 337237130019 | ऑपरेटर कंसोल</p>
       </div>
       <div class="space-y-3">
         <input type="password" id="operatorKey" placeholder="मास्टर पिन दर्ज करें" 
@@ -19,10 +21,11 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </div>
 
+  <!-- Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="/favicon.svg" alt="DocTech Logo" class="w-10 h-10 rounded-xl shadow-xs" />
+        <img src="/favicon.svg" alt="Logo" class="w-10 h-10 rounded-xl shadow-xs" />
         <div>
           <div class="flex items-center gap-2">
             <span class="font-extrabold text-slate-900 text-base leading-none">विकास जन सेवा केंद्र</span>
@@ -31,7 +34,10 @@ import Layout from '../layouts/Layout.astro';
           <span class="text-[11px] text-slate-500 font-mono">VLE ID: 337237130019 | रॉबर्ट्सगंज</span>
         </div>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="window.exportDailyRegisterCSV()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition flex items-center gap-1">
+          📊 दैनिक पंजिका (CSV)
+        </button>
         <a href="/" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 border border-slate-200">नागरिक पोर्टल &rarr;</a>
         <button onclick="window.logout()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50 border border-rose-200">लॉगआउट</button>
       </div>
@@ -39,17 +45,114 @@ import Layout from '../layouts/Layout.astro';
   </header>
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-1 space-y-6">
+
+    <!-- Automated Financial Ledger Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-medium text-slate-500">कुल संग्रह (Gross UPI)</span>
+        <span id="metricTotalCollection" class="text-xl sm:text-2xl font-bold text-slate-900 font-mono block mt-1">₹0</span>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-medium text-slate-500">सरकारी चालान (Govt Debit)</span>
+        <span id="metricGovtDebit" class="text-xl sm:text-2xl font-bold text-rose-600 font-mono block mt-1">₹0</span>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-medium text-slate-500">VLE शुद्ध लाभ (Net Profit)</span>
+        <span id="metricVleNet" class="text-xl sm:text-2xl font-bold text-emerald-600 font-mono block mt-1">₹0</span>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-medium text-slate-500">लंबित पंचिंग (Pending)</span>
+        <span id="metricPendingPunch" class="text-xl sm:text-2xl font-bold text-amber-600 font-mono block mt-1">0</span>
+      </div>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs col-span-2 lg:col-span-1">
+        <span class="text-xs font-medium text-slate-500">स्वीकृत प्रमाण पत्र</span>
+        <span id="metricApprovedCount" class="text-xl sm:text-2xl font-bold text-indigo-600 font-mono block mt-1">0</span>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="relative flex-1 w-full">
+          <input type="text" id="adminSearchInput" oninput="window.filterAdminApps()" 
+                 placeholder="नागरिक का नाम, मोबाइल नंबर, आवेदन सं., या UTR से खोजें..." 
+                 class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-indigo-600">
+          <span class="absolute left-3 top-2.5 text-slate-400 text-xs">🔍</span>
+        </div>
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full sm:w-auto" id="adminStatusTabs">
+          <button onclick="window.setAdminStatusFilter('ALL')" class="admin-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white shrink-0" data-status="ALL">सभी</button>
+          <button onclick="window.setAdminStatusFilter('PENDING_PUNCH')" class="admin-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0" data-status="PENDING_PUNCH">लंबित पंच</button>
+          <button onclick="window.setAdminStatusFilter('IN_PROCESS')" class="admin-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0" data-status="IN_PROCESS">जांच में</button>
+          <button onclick="window.setAdminStatusFilter('APPROVED')" class="admin-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0" data-status="APPROVED">स्वीकृत</button>
+          <button onclick="window.setAdminStatusFilter('DEFECT')" class="admin-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0" data-status="DEFECT">आपत्ति</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Applications Table -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
       <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
         <div>
           <h2 class="text-sm font-bold text-slate-900">नागरिक आवेदन एवं UTR सत्यापन लेज़र</h2>
-          <p class="text-[11px] text-slate-500">बैंक SMS से UTR मिलान करने के बाद e-District पोर्टल पर पंच करें</p>
+          <p class="text-[11px] text-slate-500">e-District पर पंच करने हेतु '📋 डेटा कॉपी' एवं प्रमाण पत्र जारी करने हेतु 'कार्यवाही / अपलोड' दबाएँ</p>
         </div>
         <button onclick="window.fetchApps()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">रिफ्रेश</button>
       </div>
-      <div id="applicationsContainer" class="divide-y divide-slate-100"></div>
+      <div id="applicationsContainer" class="divide-y divide-slate-100">
+        <div class="p-8 text-center text-xs text-slate-400">लेज़र लोड हो रहा है...</div>
+      </div>
     </div>
   </main>
+
+  <!-- Complete Action Modal: Assign Govt Ref, Defect Remark & Upload Verified Certificate PDF -->
+  <div id="actionModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden items-center justify-center p-3">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+        <h3 class="font-extrabold text-slate-900 text-sm">सरकारी कार्य प्रगति एवं प्रमाण पत्र अनुमोदन</h3>
+        <button onclick="window.closeActionModal()" class="text-slate-400 hover:text-slate-600 text-base font-bold">&times;</button>
+      </div>
+
+      <input type="hidden" id="actionAppNo">
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">e-District सरकारी संदर्भ संख्या (Govt Ref No.)</label>
+        <input type="text" id="actionGovtRef" placeholder="उदा. 261890012345" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-mono text-xs">
+      </div>
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">आवेदन स्थिति (Status)</label>
+        <select id="actionStatus" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold text-xs">
+          <option value="SUBMITTED">SUBMITTED (नागरिक द्वारा दर्ज)</option>
+          <option value="IN_PROCESS">IN_PROCESS (जांच में / लेखपाल आख्या लंबित)</option>
+          <option value="APPROVED">APPROVED (प्रमाण पत्र स्वीकृत एवं जारी)</option>
+          <option value="REJECTED">REJECTED (अस्वीकृत / निरस्त)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">विभागीय आपत्ति / आख्या (यदि दस्तावेज़ गलत/धुंधला हो)</label>
+        <input type="text" id="actionDefectRemark" placeholder="उदा. आधार कार्ड साफ नहीं है, दोबारा अपलोड करें" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs">
+      </div>
+
+      <!-- Direct Certificate PDF File Uploader -->
+      <div class="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 space-y-2">
+        <label class="block font-bold text-indigo-950 text-xs">
+          📁 मूल प्रमाण पत्र PDF फ़ाइल अपलोड करें (Device से चुनें)
+        </label>
+        <input type="file" id="actionCertFileInput" accept=".pdf,image/*" 
+               class="w-full text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white cursor-pointer text-xs">
+        <span id="certUploadStatus" class="text-[10px] text-slate-500 block">फ़ाइल चुनते ही स्वतः क्लाउड स्टोरेज में अपलोड होकर नागरिक के डैशबोर्ड पर लिंक हो जाएगी।</span>
+        <input type="hidden" id="actionCertUrl">
+      </div>
+
+      <div class="pt-2 flex gap-2">
+        <button onclick="window.closeActionModal()" class="w-1/3 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs">रद्द करें</button>
+        <button onclick="window.saveApplicationAction()" id="btnSaveAction" class="w-2/3 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-xs text-xs">
+          सहेजें व नागरिक को सूचित करें
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script is:inline>
     const SUPABASE_URL = "https://bpfbdmonxbdiwflpxpzt.supabase.co";
@@ -60,6 +163,7 @@ import Layout from '../layouts/Layout.astro';
     }
 
     let allApps = [];
+    let adminStatusFilter = 'ALL';
     const HASH_TARGET = "d42d38faee2d308dbda3b2c6a01490212f45ea2e88a0b0ea4cfba533cf234c9f"; // DIGISONE2026
     const HASH_BACKUP = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"; // 1234
 
@@ -77,6 +181,7 @@ import Layout from '../layouts/Layout.astro';
         sessionStorage.setItem('dt_auth_modern', hashed);
         document.getElementById('authGate').classList.add('hidden');
         window.fetchApps();
+        window.setupRealtimeListener();
       } else {
         alert("अवैध पिन!");
       }
@@ -87,6 +192,7 @@ import Layout from '../layouts/Layout.astro';
       if (stored === HASH_TARGET || stored === HASH_BACKUP) {
         document.getElementById('authGate').classList.add('hidden');
         window.fetchApps();
+        window.setupRealtimeListener();
       }
     };
 
@@ -95,40 +201,289 @@ import Layout from '../layouts/Layout.astro';
       location.reload();
     };
 
+    function playNotificationSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } catch (e) {}
+    }
+
+    window.setupRealtimeListener = function() {
+      if (!sb) return;
+      sb.channel('realtime-admin')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'applications' }, function(payload) {
+          playNotificationSound();
+          alert(`🔔 नया आवेदन प्राप्त हुआ!
+आवेदक: ${payload.new.applicant_name}
+सेवा: ${payload.new.service_type}`);
+          window.fetchApps();
+        })
+        .subscribe();
+    };
+
+    window.setAdminStatusFilter = function(st) {
+      adminStatusFilter = st;
+      document.querySelectorAll('.admin-tab').forEach(function(b) {
+        if (b.dataset.status === st) {
+          b.className = "admin-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white shrink-0";
+        } else {
+          b.className = "admin-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0";
+        }
+      });
+      window.filterAdminApps();
+    };
+
+    window.filterAdminApps = function() {
+      const q = document.getElementById('adminSearchInput').value.trim().toLowerCase();
+      const container = document.getElementById('applicationsContainer');
+      container.innerHTML = '';
+
+      const filtered = allApps.filter(function(a) {
+        const p = a.document_payload || {};
+        const matchesQuery = (a.applicant_name || '').toLowerCase().includes(q) ||
+                             (a.mobile_no || '').includes(q) ||
+                             (a.application_no || '').toLowerCase().includes(q) ||
+                             (p.upi_utr || '').includes(q);
+
+        let matchesStatus = true;
+        if (adminStatusFilter === 'PENDING_PUNCH') {
+          matchesStatus = (p.wallet_debit_status !== 'DEBITED_ON_EDISTRICT');
+        } else if (adminStatusFilter === 'DEFECT') {
+          matchesStatus = !!a.defect_remark;
+        } else if (adminStatusFilter !== 'ALL') {
+          matchesStatus = (a.status === adminStatusFilter);
+        }
+
+        return matchesQuery && matchesStatus;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="p-8 text-center text-xs text-slate-400">कोई आवेदन नहीं मिला।</div>';
+        return;
+      }
+
+      filtered.forEach(function(app) {
+        const p = app.document_payload || {};
+        const isDebited = (p.wallet_debit_status === 'DEBITED_ON_EDISTRICT');
+        const hasCert = !!p.certificate_url;
+
+        const div = document.createElement('div');
+        div.className = "p-4 hover:bg-slate-50 transition flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3";
+        div.innerHTML = `
+          <div class="space-y-1.5 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-mono font-bold text-sm text-indigo-700">${app.application_no}</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${app.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">${app.status}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-900 border border-indigo-200">
+                UTR: <strong class="font-mono">${p.upi_utr || 'NOT_ENTERED'}</strong>
+              </span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isDebited ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-50 text-rose-700 border border-rose-200'}">
+                ${isDebited ? '✓ e-District पंच (Ref: ' + (p.govt_edistrict_ref || '') + ')' : '⏳ e-District पंचिंग बाकी'}
+              </span>
+            </div>
+            <div class="text-xs text-slate-800">
+              <strong>${app.applicant_name}</strong> | सेवा: ${app.service_type} | मोबाइल: <a href="tel:${app.mobile_no}" class="font-mono text-indigo-600 font-bold">${app.mobile_no}</a>
+            </div>
+            <div class="text-[11px] text-slate-500 font-mono">
+              प्राप्त: <strong>₹${p.fee_amount || '30.00'}</strong> (सरकारी चालान: <strong class="text-rose-600">₹${p.govt_fee || '0.00'}</strong> + VLE लाभ: <strong class="text-emerald-600">₹${p.vle_fee || '30.00'}</strong>)
+            </div>
+            ${app.defect_remark ? `<div class="text-[11px] text-rose-600 font-bold">⚠️ दर्ज आपत्ति: ${app.defect_remark}</div>` : ''}
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0 self-end lg:self-center flex-wrap">
+            <button onclick="window.copyForEDistrict('${app.application_no}')" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 rounded-lg text-xs font-bold border border-slate-200 transition">
+              📋 डेटा कॉपी
+            </button>
+            <button onclick="window.openActionModal('${app.application_no}')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-xs transition">
+              📁 कार्यवाही / अपलोड
+            </button>
+            <button onclick="window.dispatchWhatsApp('${app.application_no}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition flex items-center gap-1">
+              📲 WhatsApp सूचना
+            </button>
+            ${hasCert ? `<a href="${p.certificate_url}" target="_blank" class="px-2 py-1.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-700 font-bold">सर्टिफिकेट PDF</a>` : ''}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    };
+
+    window.copyForEDistrict = function(appNo) {
+      const app = allApps.find(a => a.application_no === appNo);
+      if (!app) return;
+      const p = app.document_payload || {};
+      let text = `[DocTech Fast Punch]\nसेवा: ${app.service_type}\nनाम: ${app.applicant_name}\nमोबाइल: ${app.mobile_no}\nUTR: ${p.upi_utr || 'N/A'}\nसरकारी चालान: ₹${p.govt_fee || '0.00'}`;
+      for (const [k, v] of Object.entries(p)) {
+        if (!['applicant_photo_doc', 'id_proof_doc', 'vle_id', 'center', 'fee_amount', 'fee_status', 'wallet_debit_status', 'upi_utr', 'certificate_url'].includes(k)) {
+          text += `\n${k}: ${v}`;
+        }
+      }
+      navigator.clipboard.writeText(text).then(function() {
+        alert("डेटा क्लिपबोर्ड पर कॉपी हो गया! e-District पोर्टल पर सीधे पेस्ट करें।");
+      });
+    };
+
+    window.openActionModal = function(appNo) {
+      const app = allApps.find(a => a.application_no === appNo);
+      if (!app) return;
+      document.getElementById('actionAppNo').value = appNo;
+      document.getElementById('actionGovtRef').value = app.document_payload?.govt_edistrict_ref || '';
+      document.getElementById('actionStatus').value = app.status;
+      document.getElementById('actionDefectRemark').value = app.defect_remark || '';
+      document.getElementById('actionCertUrl').value = app.document_payload?.certificate_url || '';
+      document.getElementById('actionCertFileInput').value = '';
+      document.getElementById('certUploadStatus').innerText = app.document_payload?.certificate_url ? "✓ पहले से मूल प्रमाण पत्र PDF लिंक है।" : "फ़ाइल चुनते ही स्वतः क्लाउड स्टोरेज में अपलोड हो जाएगी।";
+      document.getElementById('actionModal').classList.remove('hidden');
+      document.getElementById('actionModal').classList.add('flex');
+    };
+
+    window.closeActionModal = function() {
+      document.getElementById('actionModal').classList.add('hidden');
+      document.getElementById('actionModal').classList.remove('flex');
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const fileInput = document.getElementById('actionCertFileInput');
+      if (fileInput) {
+        fileInput.addEventListener('change', async function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          const statusText = document.getElementById('certUploadStatus');
+          statusText.innerText = "⏳ क्लाउड स्टोरेज में अपलोड हो रहा है...";
+
+          const appNo = document.getElementById('actionAppNo').value;
+          const fileExt = file.name.split('.').pop();
+          const filePath = `issued_certificates/${appNo}_${Date.now()}.${fileExt}`;
+
+          try {
+            const { data, error } = await sb.storage.from('applicant-docs').upload(filePath, file, { upsert: true });
+            if (error) throw error;
+            const { data: urlData } = sb.storage.from('applicant-docs').getPublicUrl(filePath);
+            document.getElementById('actionCertUrl').value = urlData.publicUrl;
+            document.getElementById('actionStatus').value = 'APPROVED';
+            statusText.innerText = "✅ प्रमाण पत्र PDF सुरक्षित अपलोड हो गया! स्थिति APPROVED सेट हो गई।";
+          } catch (err) {
+            statusText.innerText = "❌ अपलोड में त्रुटि: " + err.message;
+          }
+        });
+      }
+    });
+
+    window.saveApplicationAction = async function() {
+      const appNo = document.getElementById('actionAppNo').value;
+      const app = allApps.find(a => a.application_no === appNo);
+      if (!app) return;
+
+      const govtRef = document.getElementById('actionGovtRef').value.trim();
+      const status = document.getElementById('actionStatus').value;
+      const defectRemark = document.getElementById('actionDefectRemark').value.trim();
+      const certUrl = document.getElementById('actionCertUrl').value.trim();
+
+      const updatedPayload = Object.assign({}, app.document_payload, {
+        govt_edistrict_ref: govtRef,
+        certificate_url: certUrl,
+        wallet_debit_status: govtRef ? "DEBITED_ON_EDISTRICT" : (app.document_payload?.wallet_debit_status || "PENDING")
+      });
+
+      await sb.from('applications').update({
+        status: status,
+        defect_remark: defectRemark || null,
+        document_payload: updatedPayload
+      }).eq('application_no', appNo);
+
+      window.closeActionModal();
+      alert("स्थिति एवं विवरण सफलतापूर्वक सहेज लिया गया!");
+      window.fetchApps();
+    };
+
+    window.dispatchWhatsApp = function(appNo) {
+      const app = allApps.find(a => a.application_no === appNo);
+      if (!app) return;
+      const p = app.document_payload || {};
+      let msg = "";
+
+      if (app.status === 'APPROVED' && p.certificate_url) {
+        msg = `🎉 नमस्ते ${app.applicant_name} जी,\n\nशुभ समाचार! विकास जन सेवा केंद्र (DocTech) पर आपका *${app.service_type}* प्रमाण पत्र स्वीकृत एवं जारी कर दिया गया है।\n\nआवेदन सं: ${app.application_no}\nसरकारी संदर्भ सं: ${p.govt_edistrict_ref || 'स्वीकृत'}\n\n📥 अपना मूल डिजिटल प्रमाण पत्र यहाँ से डाउनलोड करें:\n${p.certificate_url}\n\nनागरिक डैशबोर्ड:\nhttps://doctech-app.pages.dev/dashboard\n\n- विकास जन सेवा केंद्र, रॉबर्ट्सगंज`;
+      } else if (app.defect_remark) {
+        msg = `⚠️ नमस्ते ${app.applicant_name} जी,\n\nविकास जन सेवा केंद्र पर आपके *${app.service_type}* आवेदन में विभागीय आपत्ति दर्ज हुई है।\n\nआपत्ति विवरण: ${app.defect_remark}\n\nनया दस्तावेज़ सुधारने हेतु नीचे दिए गए लिंक पर अपना मोबाइल नंबर दर्ज करके नया दस्तावेज़ पुनः अपलोड करें:\nhttps://doctech-app.pages.dev/dashboard\n\n- विकास जन सेवा केंद्र, रॉबर्ट्सगंज`;
+      } else if (p.govt_edistrict_ref) {
+        msg = `नमस्ते ${app.applicant_name} जी,\n\nविकास जन सेवा केंद्र द्वारा आपका *${app.service_type}* आवेदन e-District पर दर्ज कर दिया गया है।\n\nआवेदन सं: ${app.application_no}\nसरकारी संदर्भ सं: ${p.govt_edistrict_ref}\nस्थिति: जांच में (IN PROCESS)\n\nडैशबोर्ड पर स्थिति देखें:\nhttps://doctech-app.pages.dev/dashboard\n\n- विकास जन सेवा केंद्र`;
+      } else {
+        msg = `नमस्ते ${app.applicant_name} जी,\n\nविकास जन सेवा केंद्र पर आपका *${app.service_type}* आवेदन दर्ज है (आवेदन सं: ${app.application_no})।\n\n- विकास जन सेवा केंद्र`;
+      }
+
+      window.open(`https://wa.me/91${app.mobile_no}?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+
+    window.exportDailyRegisterCSV = function() {
+      if (!allApps.length) {
+        alert("डाउनलोड हेतु कोई रिकॉर्ड उपलब्ध नहीं है!");
+        return;
+      }
+      let csv = "क्र.सं.,आवेदन संख्या,आवेदक का नाम,मोबाइल नंबर,सेवा का नाम,सरकारी चालान (₹),VLE सेवा शुल्क (₹),कुल शुल्क (₹),UTR नंबर,आवेदन स्थिति,सरकारी संदर्भ संख्या,आवेदन तिथि\n";
+      allApps.forEach(function(a, idx) {
+        const p = a.document_payload || {};
+        const date = new Date(a.created_at).toLocaleDateString('hi-IN');
+        csv += `${idx + 1},"${a.application_no}","${a.applicant_name}","${a.mobile_no}","${a.service_type}",${p.govt_fee || '0.00'},${p.vle_fee || '30.00'},${p.fee_amount || '30.00'},"${p.upi_utr || ''}","${a.status}","${p.govt_edistrict_ref || ''}","${date}"\n`;
+      });
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `CSC_Vikas_JanSevaKendra_DailyRegister_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+    };
+
     window.fetchApps = async function() {
       const container = document.getElementById('applicationsContainer');
       container.innerHTML = '<div class="p-8 text-center text-xs text-slate-400">लेज़र लोड हो रहा है...</div>';
 
       if (!sb) {
-        container.innerHTML = '<div class="p-8 text-center text-xs text-rose-500 font-semibold">Supabase कनेक्ट नहीं है।</div>';
+        container.innerHTML = '<div class="p-8 text-center text-xs text-rose-500">Supabase कनेक्ट नहीं है।</div>';
         return;
       }
 
       const { data, error } = await sb.from('applications').select('*').order('created_at', { ascending: false });
       if (error || !data) {
-        container.innerHTML = '<div class="p-8 text-center text-xs text-rose-500 font-semibold">डेटा लोड नहीं हुआ।</div>';
+        container.innerHTML = '<div class="p-8 text-center text-xs text-rose-500">डेटा लोड नहीं हुआ।</div>';
         return;
       }
 
       allApps = data;
-      container.innerHTML = '';
+      let totalCol = 0;
+      let totalGovt = 0;
+      let totalVle = 0;
+      let pendingPunch = 0;
+      let approvedCount = 0;
 
-      if (allApps.length === 0) {
-        container.innerHTML = '<div class="p-8 text-center text-xs text-slate-400">कोई आवेदन रिकॉर्ड नहीं है।</div>';
-        return;
-      }
-
-      allApps.forEach(function(app) {
-        const p = app.document_payload || {};
-        const div = document.createElement('div');
-        div.className = "p-4 hover:bg-slate-50 transition flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3";
-        div.innerHTML = '<div class="space-y-1 min-w-0">' +
-          '<div class="flex items-center gap-2"><span class="font-mono font-bold text-sm text-indigo-700">' + app.application_no + '</span><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">' + app.status + '</span><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-900 border border-indigo-200">UTR: <strong class="font-mono">' + (p.upi_utr || 'N/A') + '</strong></span></div>' +
-          '<div class="text-xs text-slate-800 font-semibold">' + app.applicant_name + ' | ' + app.service_type + ' | ' + app.mobile_no + '</div>' +
-          '<div class="text-[11px] text-slate-500 font-mono">कुल प्राप्त: ₹' + (p.fee_amount || '30.00') + ' (सरकारी: ₹' + (p.govt_fee || '0.00') + ' + VLE: ₹' + (p.vle_fee || '30.00') + ')</div>' +
-          '</div>';
-        container.appendChild(div);
+      allApps.forEach(function(a) {
+        const p = a.document_payload || {};
+        const g = parseFloat(p.govt_fee || 0);
+        const v = parseFloat(p.vle_fee || 30);
+        const t = parseFloat(p.fee_amount || (g + v));
+        totalCol += t;
+        totalGovt += g;
+        totalVle += v;
+        if (p.wallet_debit_status !== 'DEBITED_ON_EDISTRICT') pendingPunch++;
+        if (a.status === 'APPROVED') approvedCount++;
       });
+
+      document.getElementById('metricTotalCollection').innerText = `₹${totalCol.toFixed(2)}`;
+      document.getElementById('metricGovtDebit').innerText = `₹${totalGovt.toFixed(2)}`;
+      document.getElementById('metricVleNet').innerText = `₹${totalVle.toFixed(2)}`;
+      document.getElementById('metricPendingPunch').innerText = pendingPunch;
+      document.getElementById('metricApprovedCount').innerText = approvedCount;
+
+      window.filterAdminApps();
     };
 
     window.checkAuth();
