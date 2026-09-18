@@ -1,0 +1,209 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import masterData from '../../data/master_core.json';
+
+export async function getStaticPaths() {
+  const services = masterData.services || [];
+  const departments = masterData.departments || [];
+  return services.map((svc) => {
+    const dept = departments.find(d => d.id === svc.dept_id);
+    return {
+      params: { id: svc.id },
+      props: { svc, dept }
+    };
+  });
+}
+
+const { svc, dept } = Astro.props;
+const totalFee = (svc.govt_fee + svc.vle_fee).toFixed(2);
+---
+<Layout title={`${svc.name} - आधिकारिक आवेदन फ़ॉर्म | विकास जन सेवा केंद्र`}>
+  <main class="max-w-2xl mx-auto px-4 py-8 space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-semibold">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span>{dept ? dept.name.split('(')[0].trim() : 'विभाग'}</span>
+      <span>/</span>
+      <span class="text-slate-900 font-bold truncate">{svc.name}</span>
+    </nav>
+
+    <!-- Header Card with Transparent Pricing -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-100">
+          {dept ? dept.name : 'उत्तर प्रदेश शासन'}
+        </span>
+        <span class="text-xs font-bold text-slate-500">निस्तारण समय: <strong>{svc.timeline}</strong></span>
+      </div>
+
+      <h1 class="text-xl sm:text-2xl font-black text-slate-900 leading-snug">{svc.name}</h1>
+      <p class="text-xs text-slate-500 leading-relaxed font-medium">{svc.desc}</p>
+
+      <!-- Transparent Fee Box -->
+      <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs space-y-1.5">
+        <div class="flex justify-between text-slate-600">
+          <span>1. शासकीय चालान (Govt Fee):</span>
+          <span class="font-mono font-bold text-slate-900">₹{svc.govt_fee.toFixed(2)}</span>
+        </div>
+        <div class="flex justify-between text-slate-600">
+          <span>2. अधिकृत VLE तकनीकी व सेवा शुल्क:</span>
+          <span class="font-mono font-bold text-slate-900">₹{svc.vle_fee.toFixed(2)}</span>
+        </div>
+        <div class="flex justify-between text-slate-900 font-black border-t border-slate-200 pt-1.5 text-sm">
+          <span>कुल देय वैधानिक दर:</span>
+          <span class="font-mono text-indigo-700">₹{totalFee}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Application Form Card -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+      <form id="standaloneApplyForm" onsubmit="window.submitApply(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="serviceId" value={svc.id} />
+        <input type="hidden" id="serviceName" value={svc.name} />
+        <input type="hidden" id="govtFee" value={svc.govt_fee.toFixed(2)} />
+        <input type="hidden" id="vleFee" value={svc.vle_fee.toFixed(2)} />
+        <input type="hidden" id="totalFee" value={totalFee} />
+
+        <div class="space-y-3">
+          <h2 class="text-xs font-black text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">
+            1. आवेदक का विवरण (आधार कार्ड अनुसार)
+          </h2>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">आवेदक का पूरा नाम *</label>
+            <input type="text" id="applicantName" required placeholder="पूरा नाम दर्ज करें" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:outline-none focus:border-indigo-600">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">मोबाइल नंबर (WhatsApp पावती हेतु) *</label>
+            <input type="tel" id="mobileNo" required pattern="[0-9]{10}" placeholder="10 अंकों का मोबाइल नंबर" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs font-semibold focus:outline-none focus:border-indigo-600">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">पिता / पति का नाम *</label>
+            <input type="text" id="fatherName" required placeholder="पिता अथवा पति का नाम" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:outline-none focus:border-indigo-600">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">तहसील (सोनभद्र) *</label>
+            <select id="tehsil" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold focus:outline-none focus:border-indigo-600">
+              <option value="Robertsganj">रॉबर्ट्सगंज (Robertsganj)</option>
+              <option value="Ghorawal">घोरावल (Ghorawal)</option>
+              <option value="Duddhi">दुद्धी (Duddhi)</option>
+              <option value="Obra">ओबरा (Obra)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">स्थायी पता (ग्राम / वार्ड / पोस्ट) *</label>
+            <textarea id="address" required rows="2" placeholder="पूरा स्थायी पता लिखें" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:border-indigo-600"></textarea>
+          </div>
+        </div>
+
+        <!-- Document Uploads with Client-Side Canvas Compression -->
+        <div class="space-y-3 pt-2">
+          <h2 class="text-xs font-black text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">
+            2. अनिवार्य दस्तावेज़ संलग्नक (अधिकतम 10MB)
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
+              <label class="block font-bold text-slate-700 text-[11px]">1. आवेदक की फ़ोटो *</label>
+              <input type="file" id="applicantPhoto" accept="image/*" required class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+            </div>
+
+            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
+              <label class="block font-bold text-slate-700 text-[11px]">2. पहचान प्रमाण (आधार कार्ड) *</label>
+              <input type="file" id="idProof" accept="image/*,.pdf" required class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 file:text-indigo-700 cursor-pointer">
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment & UTR Lock -->
+        <div class="space-y-3 pt-2">
+          <h2 class="text-xs font-black text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">
+            3. वैधानिक शुल्क भुगतान (₹{totalFee})
+          </h2>
+
+          <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 flex flex-col items-center text-center space-y-3">
+            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=theepicvikas@oksbi%26pn=Vikas%20Jan%20Seva%20Kendra%26am=${totalFee}%26cu=INR`} 
+                 alt="UPI QR" class="w-36 h-36 rounded-xl border border-white shadow-xs p-1 bg-white" />
+            
+            <div class="space-y-1">
+              <span class="text-[11px] text-slate-600 font-bold block">PhonePe, Google Pay, Paytm अथवा किसी भी UPI ऐप से स्कैन करें</span>
+              <span class="font-mono text-indigo-900 font-bold text-xs block">UPI VPA: theepicvikas@oksbi</span>
+            </div>
+          </div>
+
+          <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 space-y-1.5">
+            <label class="block font-bold text-amber-950 text-xs">भुगतान के बाद 12 अंकों का UPI UTR / Reference No. दर्ज करें *</label>
+            <input type="text" id="upiUtr" required maxlength="12" pattern="[0-9]{12}" placeholder="12 अंकों का UTR नंबर" 
+                   class="w-full px-3.5 py-2.5 rounded-xl border border-amber-300 bg-white font-mono font-bold text-xs tracking-wider focus:outline-none focus:ring-2 focus:ring-amber-500">
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl shadow-md transition text-xs active:scale-95">
+          सत्यापित करें एवं आवेदन जमा करें &rarr;
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script is:inline>
+    const SUPABASE_URL = "https://bpfbdmonxbdiwflpxpzt.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwZmJkbW9ueGJkaXdmbHB4cHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjgyMzksImV4cCI6MjEwNTIwNDIzOX0.1KglQKHg-nloSaK1myghjVpNpcwAYzWdJ1_bBv0gclU";
+    let sb = null;
+    if (window.supabase) {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    window.submitApply = async function(e) {
+      e.preventDefault();
+      const utr = document.getElementById('upiUtr').value.trim();
+      if (!/^[0-9]{12}$/.test(utr)) {
+        alert("कृपया सही 12 अंकों का UPI UTR नंबर दर्ज करें!");
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerText = "आवेदन सुरक्षित दर्ज हो रहा है...";
+
+      const payload = {
+        service_type: document.getElementById('serviceName').value,
+        service_id: document.getElementById('serviceId').value,
+        applicant_name: document.getElementById('applicantName').value.trim(),
+        mobile_no: document.getElementById('mobileNo').value.trim(),
+        district: "Sonbhadra",
+        document_payload: {
+          father_name: document.getElementById('fatherName').value.trim(),
+          tehsil: document.getElementById('tehsil').value,
+          address: document.getElementById('address').value.trim(),
+          upi_utr: utr,
+          govt_fee: document.getElementById('govtFee').value,
+          vle_fee: document.getElementById('vleFee').value,
+          fee_amount: document.getElementById('totalFee').value,
+          fee_status: "PAID_UPI",
+          wallet_debit_status: "PENDING_EDISTRICT_PUNCH"
+        }
+      };
+
+      try {
+        let appNo = "DT-" + new Date().toISOString().slice(2,7).replace('-','') + "-" + Math.floor(1000 + Math.random() * 9000);
+        if (sb) {
+          const { data, error } = await sb.from('applications').insert([payload]).select();
+          if (!error && data && data[0]) {
+            appNo = data[0].application_no;
+          }
+        }
+        alert(`सफलतापूर्वक दर्ज हुआ! आपकी आवेदन संख्या: ${appNo}`);
+        window.location.href = `/?track=${appNo}`;
+      } catch(err) {
+        alert("त्रुटि: " + err.message);
+        btn.disabled = false;
+        btn.innerText = "सत्यापित करें एवं आवेदन जमा करें →";
+      }
+    };
+  </script>
+</Layout>

@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Allow: /services/
-Allow: /dashboard
 Disallow: /admin
 Sitemap: https://doctech-app.pages.dev/sitemap.xml

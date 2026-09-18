@@ -2,39 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://doctech-app.pages.dev/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>https://doctech-app.pages.dev/dashboard</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/category/students</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/category/women</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/category/farmers</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/category/seniors</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/category/business</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/category/citizens</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/revenue</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/fcs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/panchayat</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/police</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/social_welfare</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/women_welfare</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/divyangjan</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/health</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/transport</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/finance</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/msme</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/labour</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/agriculture</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/department/uppcl</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/income_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/income_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/caste_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/caste_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/domicile_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/domicile_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/khatauni_extract</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/khatauni_extract</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/haisiyat_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/haisiyat_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/varasat_application</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/varasat_application</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/ration_new</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/ration_new</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/ration_unit_add</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/ration_unit_add</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/parivar_register</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/parivar_register</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/character_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/character_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/tenant_verification</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/tenant_verification</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/lost_report</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/lost_report</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/vridha_pension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/vridha_pension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/up_scholarship</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/up_scholarship</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/vidhwa_pension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/vidhwa_pension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/kanya_sumangala</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/kanya_sumangala</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/shadi_anudan</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/shadi_anudan</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/divyang_pension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/divyang_pension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/udid_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/udid_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/birth_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/birth_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/death_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/death_cert</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/ayushman_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/ayushman_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/learner_license</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/learner_license</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/dl_renewal</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/dl_renewal</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/pan_new</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/pan_new</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/pan_correction</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/pan_correction</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/udyam_msme</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/udyam_msme</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/fssai_food</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/fssai_food</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/shops_act</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/shops_act</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/eshram_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/eshram_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/bocw_labour_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/bocw_labour_card</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/rojgar_sangam</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/rojgar_sangam</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/pm_kisan_ekyc</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/pm_kisan_ekyc</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/bijli_connection</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/bijli_connection</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://doctech-app.pages.dev/services/load_extension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doctech-app.pages.dev/apply/load_extension</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

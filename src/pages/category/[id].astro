@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import masterData from '../../data/master_core.json';
+
+export async function getStaticPaths() {
+  const { categories } = masterData;
+  return categories.map((cat) => ({
+    params: { id: cat.id },
+    props: { cat }
+  }));
+}
+
+const { cat } = Astro.props;
+const { services = [], departments = [] } = masterData;
+
+// Filter services matching this persona category
+const categoryServices = services.filter(s => s.personas && s.personas.includes(cat.id));
+---
+<Layout title={`${cat.title} | विकास जन सेवा केंद्र`}>
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-semibold">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span class="text-slate-900 font-bold">{cat.title}</span>
+    </nav>
+
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl p-3 rounded-2xl bg-slate-50 border border-slate-100">{cat.icon}</span>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">{cat.title}</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 font-medium">{cat.subtitle}</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed font-medium">
+        इस वर्ग से संबंधित उत्तर प्रदेश शासन के सभी आधिकारिक दस्तावेज़ एवं सेवाएँ नीचे सूचीबद्ध हैं। आप जन सेवा केंद्र द्वारा डिजिटल आवेदन कर सकते हैं अथवा सीधे संबंधित सरकारी विभाग के आधिकारिक पोर्टल पर भी जा सकते हैं।
+      </p>
+    </div>
+
+    <!-- Category Services Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {categoryServices.map(svc => {
+        const dept = departments.find(d => d.id === svc.dept_id);
+        const totalFee = (svc.govt_fee + svc.vle_fee).toFixed(2);
+        return (
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                {dept ? dept.name.split('(')[0].trim() : 'उत्तर प्रदेश शासन'}
+              </span>
+              <h3 class="font-black text-base text-slate-900 leading-snug">{svc.name}</h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium">{svc.desc}</p>
+              
+              <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-[11px] space-y-1">
+                <div class="flex justify-between text-slate-600">
+                  <span>शासकीय चालान (Govt Fee):</span>
+                  <span class="font-mono font-bold text-slate-800">₹{svc.govt_fee.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                  <span>अधिकृत VLE सेवा शुल्क:</span>
+                  <span class="font-mono font-bold text-slate-800">₹{svc.vle_fee.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between text-slate-900 font-extrabold border-t border-slate-200 pt-1">
+                  <span>कुल देय वैधानिक दर:</span>
+                  <span class="font-mono text-indigo-700 text-xs">₹{totalFee}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2 pt-1">
+              <a href={`/apply/${svc.id}`} class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-1.5">
+                <span>📝 इस सेवा हेतु आवेदन करें &rarr;</span>
+              </a>
+              {svc.govt_portal_url && (
+                <a href={svc.govt_portal_url} target="_blank" rel="noopener noreferrer" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl border border-slate-200 transition flex items-center justify-center gap-1">
+                  <span>🌐 आधिकारिक पोर्टल ({svc.govt_portal_name || 'Govt Portal'})</span>
+                </a>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import masterData from '../../data/master_core.json';
+
+export async function getStaticPaths() {
+  const { departments } = masterData;
+  return departments.map((dept) => ({
+    params: { id: dept.id },
+    props: { dept }
+  }));
+}
+
+const { dept } = Astro.props;
+const { services = [] } = masterData;
+const deptServices = services.filter(s => s.dept_id === dept.id);
+---
+<Layout title={`${dept.name} | विकास जन सेवा केंद्र`}>
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+    <nav class="flex items-center gap-2 text-xs text-slate-500 font-semibold">
+      <a href="/" class="hover:text-indigo-600">होम</a>
+      <span>/</span>
+      <span class="text-slate-900 font-bold">{dept.name.split('(')[0].trim()}</span>
+    </nav>
+
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl p-3 rounded-2xl bg-slate-50 border border-slate-100">{dept.icon}</span>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">{dept.name}</h1>
+          <p class="text-xs text-slate-500 mt-1 font-medium">{dept.desc}</p>
+          <span class="text-[11px] text-indigo-600 font-mono font-bold mt-1 block">आधिकारिक सरकारी पोर्टल: {dept.official_portal}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {deptServices.map(svc => {
+        const totalFee = (svc.govt_fee + svc.vle_fee).toFixed(2);
+        return (
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-black text-base text-slate-900 leading-snug">{svc.name}</h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium">{svc.desc}</p>
+              
+              <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-[11px] space-y-1">
+                <div class="flex justify-between text-slate-600">
+                  <span>शासकीय चालान (Govt Fee):</span>
+                  <span class="font-mono font-bold text-slate-800">₹{svc.govt_fee.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                  <span>अधिकृत VLE सेवा शुल्क:</span>
+                  <span class="font-mono font-bold text-slate-800">₹{svc.vle_fee.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between text-slate-900 font-extrabold border-t border-slate-200 pt-1">
+                  <span>कुल देय वैधानिक दर:</span>
+                  <span class="font-mono text-indigo-700 text-xs">₹{totalFee}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2 pt-1">
+              <a href={`/apply/${svc.id}`} class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-1.5">
+                <span>📝 इस सेवा हेतु आवेदन करें &rarr;</span>
+              </a>
+              {svc.govt_portal_url && (
+                <a href={svc.govt_portal_url} target="_blank" rel="noopener noreferrer" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl border border-slate-200 transition flex items-center justify-center gap-1">
+                  <span>🌐 आधिकारिक पोर्टल ({svc.govt_portal_name || 'Govt Portal'})</span>
+                </a>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </main>
+</Layout>

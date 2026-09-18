@@ -1,74 +1,146 @@
 {
+  "categories": [
+    {
+      "id": "students",
+      "title": "छात्र व युवा वर्ग",
+      "subtitle": "छात्रवृत्ति, जाति, आय, निवास, LLR, सेवायोजन",
+      "icon": "🎓",
+      "badge": "विद्यार्थी सेवाएँ"
+    },
+    {
+      "id": "women",
+      "title": "महिला कल्याण एवं परिवार",
+      "subtitle": "राशन कार्ड, कन्या सुमंगला, विधवा पेंशन",
+      "icon": "👩",
+      "badge": "महिला संबल"
+    },
+    {
+      "id": "farmers",
+      "title": "किसान व कृषि भूमि",
+      "subtitle": "खतौनी नकल, वरासत, हैसियत, PM किसान",
+      "icon": "🌾",
+      "badge": "किसान पोर्टल"
+    },
+    {
+      "id": "seniors",
+      "title": "वरिष्ठ व दिव्यांगजन",
+      "subtitle": "वृद्धावस्था पेंशन, दिव्यांग पेंशन, UDID कार्ड",
+      "icon": "👴",
+      "badge": "पेंशन व सहायता"
+    },
+    {
+      "id": "business",
+      "title": "व्यापारी व MSME",
+      "subtitle": "उद्यम रजिस्ट्रेशन, FSSAI लाइसेंस, Shop Act",
+      "icon": "💼",
+      "badge": "व्यापार पंजीयन"
+    },
+    {
+      "id": "citizens",
+      "title": "सामान्य नागरिक सेवाएँ",
+      "subtitle": "जन्म/मृत्यु प्रमाण पत्र, आयुष्मान भारत, पुलिस सत्यापन",
+      "icon": "🏠",
+      "badge": "नागरिक दस्तावेज़"
+    }
+  ],
   "departments": [
     {
       "id": "revenue",
-      "name": "राजस्व विभाग (Board of Revenue / e-District)",
-      "icon": "📜"
+      "name": "राजस्व विभाग (Board of Revenue)",
+      "desc": "आय, जाति, निवास, खतौनी नकल, हैसियत, वरासत",
+      "icon": "📜",
+      "official_portal": "edistrict.up.gov.in"
     },
     {
       "id": "fcs",
       "name": "खाद्य एवं रसद विभाग (FCS UP)",
-      "icon": "🌾"
+      "desc": "नया राशन कार्ड, यूनिट संशोधन",
+      "icon": "🌾",
+      "official_portal": "fcs.up.gov.in"
     },
     {
       "id": "panchayat",
       "name": "पंचायती राज विभाग (Panchayati Raj)",
-      "icon": "🏡"
+      "desc": "परिवार रजिस्टर (कुटुंब) नकल",
+      "icon": "🏡",
+      "official_portal": "edistrict.up.gov.in"
     },
     {
       "id": "police",
       "name": "गृह एवं पुलिस विभाग (UP Police / CCTNS)",
-      "icon": "👮"
+      "desc": "चरित्र सत्यापन, किराएदार जांच, ई-गुमशुदगी",
+      "icon": "👮",
+      "official_portal": "cctnsup.gov.in"
     },
     {
       "id": "social_welfare",
       "name": "समाज कल्याण विभाग (Social Welfare)",
-      "icon": "🤝"
+      "desc": "वृद्धावस्था पेंशन, UP स्कॉलरशिप",
+      "icon": "🤝",
+      "official_portal": "sspy-up.gov.in"
     },
     {
       "id": "women_welfare",
-      "name": "महिला कल्याण विभाग (Women Welfare)",
-      "icon": "👩"
+      "name": "महिला कल्याण विभाग",
+      "desc": "कन्या सुमंगला, विधवा पेंशन, शादी अनुदान",
+      "icon": "👩",
+      "official_portal": "mksy.up.gov.in"
     },
     {
       "id": "divyangjan",
       "name": "दिव्यांगजन सशक्तिकरण विभाग",
-      "icon": "♿"
+      "desc": "दिव्यांग पेंशन, स्वावलंबन UDID कार्ड",
+      "icon": "♿",
+      "official_portal": "swavlambancard.gov.in"
     },
     {
       "id": "health",
       "name": "चिकित्सा एवं स्वास्थ्य विभाग (CRS)",
-      "icon": "🏥"
+      "desc": "डिजिटल जन्म/मृत्यु प्रमाण पत्र, आयुष्मान कार्ड",
+      "icon": "🏥",
+      "official_portal": "crsorgi.gov.in"
     },
     {
       "id": "transport",
       "name": "परिवहन विभाग (MoRTH / सारथी)",
-      "icon": "🚗"
+      "desc": "लर्नर लाइसेंस (LLR), ड्राइविंग लाइसेंस नवीनीकरण",
+      "icon": "🚗",
+      "official_portal": "sarathi.parivahan.gov.in"
     },
     {
       "id": "finance",
       "name": "आयकर विभाग / पैन सेवाएँ (NSDL)",
-      "icon": "💳"
+      "desc": "नया पैन कार्ड (Form 49A), पैन संशोधन",
+      "icon": "💳",
+      "official_portal": "onlineservices.nsdl.com"
     },
     {
       "id": "msme",
-      "name": "सूक्ष्म, लघु एवं मध्यम उद्यम (MSME / FSSAI)",
-      "icon": "🏭"
+      "name": "सूक्ष्म, लघु एवं मध्यम उद्यम (MSME)",
+      "desc": "उद्यम रजिस्ट्रेशन, FSSAI खाद्य लाइसेंस, Shop Act",
+      "icon": "🏭",
+      "official_portal": "udyamregistration.gov.in"
     },
     {
       "id": "labour",
-      "name": "श्रम एवं रोजगार विभाग (Labour / e-Shram)",
-      "icon": "🔨"
+      "name": "श्रम एवं रोजगार विभाग (Labour)",
+      "desc": "ई-श्रम कार्ड, BOCW लेबर कार्ड, सेवायोजन",
+      "icon": "🔨",
+      "official_portal": "eshram.gov.in"
     },
     {
       "id": "agriculture",
       "name": "कृषि एवं किसान कल्याण विभाग",
-      "icon": "🚜"
+      "desc": "PM किसान सम्मान निधि E-KYC / पंजीकरण",
+      "icon": "🚜",
+      "official_portal": "pmkisan.gov.in"
     },
     {
       "id": "uppcl",
       "name": "ऊर्जा विभाग (UPPCL Electricity)",
-      "icon": "⚡"
+      "desc": "नया बिजली मीटर कनेक्शन (झटपट), भार वृद्धि",
+      "icon": "⚡",
+      "official_portal": "jhatpat.uppcl.org"
     }
   ],
   "services": [
